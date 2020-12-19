@@ -10,12 +10,7 @@ class TaTeTiTest(unittest.TestCase):
         self.assertEqual(tateti.board, first)
 
     @parameterized.expand([
-        ([['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x']]),
-        ([['o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o']]),
-        ([['x', 'x', 'o', 'o', 'x', 'x', 'o', 'o', 'x']]),
-        ([['o', 'o', 'x', 'x', 'o', 'o', 'x', 'x', 'o']]),
-        ([['o', 'x', 'x', 'o', 'o', 'x', 'x', 'o', 'o']]),
-        ([['x', 'o', 'o', 'x', 'x', 'o', 'o', 'x', 'x']])
+        ([['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x']])
     ])
     def test_full(self, board):
         tateti = TaTeTi(board)
@@ -87,7 +82,19 @@ class TaTeTiTest(unittest.TestCase):
     ])
     def test_validate(self, board, position):
         tateti = TaTeTi(board)
-        self.assertTrue(tateti.validate(position + 1))
+        self.assertTrue(tateti.validate(position+1))
+
+    @parameterized.expand([
+        (['x', 'o', 'x', 'o', ' ', 'o', 'x', 'o', 'x'], 3),
+        (['o', 'x', 'o', ' ', 'o', ' ', 'o', 'x', 'o'], 2),
+        (['x', 'x', 'o', ' ', 'x', 'x', ' ', ' ', 'x'], 5),
+        (['o', ' ', 'x', ' ', 'o', ' ', 'x', ' ', 'o'], 0),
+        ([' ', ' ', 'x', ' ', 'o', 'x', ' ', 'o', ' '], 2),
+        (['x', ' ', ' ', 'x', ' ', ' ', 'o', ' ', ' '], 6)
+    ])
+    def test_not_validate(self, board, position):
+        tateti = TaTeTi(board)
+        self.assertFalse(tateti.validate(position+1))
 
     @parameterized.expand([
         (['x', 'o', 'x', 'o', ' ', 'o', 'x', 'o', 'x'], 3, 'x'),
@@ -101,6 +108,7 @@ class TaTeTiTest(unittest.TestCase):
         tateti = TaTeTi(board)
         with self.assertRaises(Exception):
             tateti.assign(position + 1, piece)
+    
     @parameterized.expand([
         (5, 'x', ['x', 'o', 'x', 'o', ' ', 'o', 'x', 'o', 'x'],
          ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x']),
@@ -111,6 +119,18 @@ class TaTeTiTest(unittest.TestCase):
         tateti = TaTeTi(board_old)
         tateti.assign(position, piece)
         self.assertEqual(tateti.board, board_new)
+
+    @parameterized.expand([
+        (['x', 'o', 'x', 'o', ' ', 'o', 'x', 'o', 'x'],
+         '\n x | o | x \n---+---+---\n o | 5 | o \n---+---+---\n x | o | x \n'),
+        ([' ', ' ', 'x', ' ', 'o', 'x', ' ', 'o', ' '],
+         '\n 1 | 2 | x \n---+---+---\n 4 | o | x \n---+---+---\n 7 | o | 9 \n'),
+        ([' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+         '\n 1 | 2 | 3 \n---+---+---\n 4 | 5 | 6 \n---+---+---\n 7 | 8 | 9 \n')
+    ])
+    def test_draw_board(self, board, display):
+        tateti = TaTeTi(board)
+        self.assertEqual(tateti.draw_board(), display)
 
 
 if __name__ == "__main__":

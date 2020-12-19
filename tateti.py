@@ -45,34 +45,35 @@ class TaTeTi:
         return False
 
     def validate(self, pos):
-        lugar = self.board
-        if lugar[0] == ' ':
-            return pos
-        elif lugar[1] == ' ':
-            return pos
-        elif lugar[2] == ' ':
-            return pos
-        elif lugar[3] == ' ':
-            return pos
-        elif lugar[4] == ' ':
-            return pos
-        elif lugar[5] == ' ':
-            return pos
-        elif lugar[6] == ' ':
-            return pos
-        elif lugar[7] == ' ':
-            return pos
-        elif lugar[8] == ' ':
-            return pos
-        else:
-            return False
-    
+        num = pos - 1
+        for _ in range(0, 9):
+            if self.board[num] == ' ':
+                return True
+        return False
+
     def assign(self, pos, piece):
         validate = self.validate(pos)
-        if validate == pos:
-            for v in self.board[pos]:
-                self.board.remove(v)
-                self.board.append(piece)
-                return self.board
+        if validate is True:
+            self.board[pos - 1] = piece
+            return self.board
         else:
             raise Exception
+
+    def draw_board(self):
+        w = ('---+---+---')
+        if self.board[0] and self.board[1] and self.board[2] != ' ':
+            x = ' {a} | {b} | {c} '.format(a=self.board[0], b=self.board[1],
+                                           c=self.board[2])
+        if self.board[0] and self.board[1] and self.board[2] != ' ':
+            y = ' {a} | {b} | {c} '.format(a=self.board[3], b=self.board[4],
+                                           c=self.board[5])
+        if self.board[0] and self.board[1] and self.board[2] != ' ':
+            z = ' {a} | {b} | {c} '.format(a=self.board[6], b=self.board[7],
+                                           c=self.board[8])
+        if self.board[0] or self.board[1] or self.board[2] == ' ':
+            x = ' 1 | 2 | 3 '
+        if self.board[0] or self.board[1] or self.board[2] == ' ':
+            y = ' 4 | 5 | 6 '
+        if self.board[0] or self.board[1] or self.board[2] == ' ':
+            z = ' 7 | 8 | 9 '
+        return ("\n".join((x, w, y, w, z)))
