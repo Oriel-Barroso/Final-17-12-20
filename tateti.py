@@ -44,36 +44,27 @@ class TaTeTi:
             return True
         return False
 
-    def validate(self, pos):
-        num = pos - 1
-        for _ in range(0, 9):
-            if self.board[num] == ' ':
-                return True
+    def validate(self, position):
+        if self.board[position-1] == ' ':
+            return True
         return False
 
-    def assign(self, pos, piece):
-        validate = self.validate(pos)
-        if validate is True:
-            self.board[pos - 1] = piece
-            return self.board
+    def assign(self, position, piece):
+        boolean = self.validate(position)
+        if boolean is True:
+            self.board[position-1] = piece
         else:
             raise Exception
-
+    
     def draw_board(self):
-        w = ('---+---+---')
-        if self.board[0] and self.board[1] and self.board[2] != ' ':
-            x = ' {a} | {b} | {c} '.format(a=self.board[0], b=self.board[1],
-                                           c=self.board[2])
-        if self.board[0] and self.board[1] and self.board[2] != ' ':
-            y = ' {a} | {b} | {c} '.format(a=self.board[3], b=self.board[4],
-                                           c=self.board[5])
-        if self.board[0] and self.board[1] and self.board[2] != ' ':
-            z = ' {a} | {b} | {c} '.format(a=self.board[6], b=self.board[7],
-                                           c=self.board[8])
-        if self.board[0] or self.board[1] or self.board[2] == ' ':
-            x = ' 1 | 2 | 3 '
-        if self.board[0] or self.board[1] or self.board[2] == ' ':
-            y = ' 4 | 5 | 6 '
-        if self.board[0] or self.board[1] or self.board[2] == ' ':
-            z = ' 7 | 8 | 9 '
-        return ("\n".join((x, w, y, w, z)))
+        lista = [" " for _ in range(9)]
+        for i in range(9):
+            if self.board[i] == " ":
+                lista[i] = i+1
+                continue
+            lista[i] = self.board[i]
+        display = (f'\n {lista[0]} | {lista[1]} | {lista[2]}'
+                   f' \n---+---+---\n {lista[3]} | {lista[4]}'
+                   f' | {lista[5]} \n---+---+---\n {lista[6]}'
+                   f' | {lista[7]} | {lista[8]} \n')
+        return display
